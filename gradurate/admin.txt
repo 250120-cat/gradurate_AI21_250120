@@ -1,0 +1,5 @@
+user:admin
+pass:adminpass
+
+user:hospital_test
+pass:hospitalpass
