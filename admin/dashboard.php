@@ -6,16 +6,54 @@ $page_title = '管理ダッシュボード';
 $page_description = 'Pet Digital ID の管理者画面です。データの集計と迷子報告の確認ができます。';
 
 $pdo = get_pdo();
+
+$totals = [
+    'pets' => 0,
+    'owners' => 0,
+    'shops' => 0,
+    'health_records' => 0,
+    'consultation_threads' => 0
+];
+
+$newsFeeds = [];
+
 try {
-    $totals = [];
-    $totals['pets'] = (int)$pdo->query('SELECT COUNT(*) FROM pets')->fetchColumn();
-    $totals['owners'] = (int)$pdo->query('SELECT COUNT(*) FROM owners')->fetchColumn();
-    $totals['shops'] = (int)$pdo->query('SELECT COUNT(*) FROM shops')->fetchColumn();
-    $totals['health_records'] = (int)$pdo->query('SELECT COUNT(*) FROM health_records')->fetchColumn();
-    $totals['consultation_threads'] = (int)$pdo->query('SELECT COUNT(*) FROM consultation_threads')->fetchColumn();
-    $newsFeeds = $pdo->query('SELECT nf.feed_id, nf.title, nf.url, nf.enabled, nf.last_fetched, COUNT(nc.item_id) AS cached_count FROM news_feeds nf LEFT JOIN news_cache nc ON nf.feed_id = nc.feed_id GROUP BY nf.feed_id ORDER BY nf.last_fetched DESC')->fetchAll();
+    $totals['pets'] = (int)$pdo
+        ->query('SELECT COUNT(*) FROM pets')
+        ->fetchColumn();
+
+    $totals['owners'] = (int)$pdo
+        ->query('SELECT COUNT(*) FROM owners')
+        ->fetchColumn();
+
+    $totals['shops'] = (int)$pdo
+        ->query('SELECT COUNT(*) FROM shops')
+        ->fetchColumn();
+
+    $totals['health_records'] = (int)$pdo
+        ->query('SELECT COUNT(*) FROM health_records')
+        ->fetchColumn();
+
+    $totals['consultation_threads'] = (int)$pdo
+        ->query('SELECT COUNT(*) FROM consultation_threads')
+        ->fetchColumn();
+
+    $newsFeeds = $pdo->query(
+        'SELECT
+            nf.feed_id,
+            nf.title,
+            nf.url,
+            nf.enabled,
+            nf.last_fetched,
+            COUNT(nc.item_id) AS cached_count
+         FROM news_feeds nf
+         LEFT JOIN news_cache nc
+            ON nf.feed_id = nc.feed_id
+         GROUP BY nf.feed_id
+         ORDER BY nf.last_fetched DESC'
+    )->fetchAll();
+
 } catch (Exception $e) {
-    $totals = ['pets'=>0,'owners'=>0,'shops'=>0,'health_records'=>0];
     $newsFeeds = [];
 }
 ?>
@@ -28,23 +66,23 @@ try {
     </div>
     <div class="stats-grid">
       <div class="stat-card">
-        <div class="stat-value"><?php echo $totals['pets']; ?></div>
+        <div class="stat-value"><?php echo $totals['pets'] ?? 0; ?></div>
         <div class="stat-label">登録ペット</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value"><?php echo $totals['owners']; ?></div>
+        <div class="stat-value"><?php echo $totals['owners'] ?? 0; ?></div>
         <div class="stat-label">飼い主</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value"><?php echo $totals['shops']; ?></div>
+        <div class="stat-value"><?php echo $totals['shops'] ?? 0; ?></div>
         <div class="stat-label">店舗</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value"><?php echo $totals['health_records']; ?></div>
+        <div class="stat-value"><?php echo $totals['health_records'] ?? 0; ?></div>
         <div class="stat-label">健康記録</div>
       </div>
       <div class="stat-card">
-        <div class="stat-value"><?php echo $totals['consultation_threads']; ?></div>
+        <div class="stat-value"><?php echo $totals['consultation_threads'] ?? 0; ?></div>
         <div class="stat-label">相談スレッド</div>
       </div>
     </div>

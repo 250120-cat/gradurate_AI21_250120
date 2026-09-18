@@ -1,5 +1,7 @@
 <?php
 require_once __DIR__ . '/config.php';
+echo 'HOST: ' . DB_HOST . '<br>';
+echo 'DB: ' . DB_NAME . '<br>';
 
 function get_pdo() {
     static $pdo = null;

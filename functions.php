@@ -32,48 +32,52 @@ function current_user(){
 }
 
 function attempt_login($username, $password){
-    // まずDBにユーザーがいれば照合する
     try {
         $pdo = get_pdo();
+
         $stmt = $pdo->prepare(
             'SELECT
                 user_id,
                 username,
                 password_hash,
-                role,
-                owner_id,
-                shop_id,
-                clinic_id
-            FROM users
-            WHERE username = ?
-            LIMIT 1'
+                role
+             FROM users
+             WHERE username = ?
+             LIMIT 1'
         );
+
         $stmt->execute([$username]);
         $row = $stmt->fetch();
+
         if ($row && password_verify($password, $row['password_hash'])){
             $_SESSION['user'] = [
-    'id'        => $row['user_id'],
-    'username'  => $row['username'],
-    'role'      => $row['role'],
-    'owner_id'  => $row['owner_id'],
-    'shop_id'   => $row['shop_id'],
-    'clinic_id' => $row['clinic_id']
-];
+                'id'       => $row['user_id'],
+                'username' => $row['username'],
+                'role'     => $row['role']
+            ];
+
             return true;
         }
+
     } catch (Exception $e) {
-        // DB接続やクエリで失敗した場合はフォールバックでconfigの管理者を許可
+        // DB error
     }
 
-    // フォールバック: プロトタイプ時のみ config 定義を確認
-    if (defined('ADMIN_USER') && $username === ADMIN_USER && $password === ADMIN_PASS){
-        $_SESSION['user'] = ['username'=>ADMIN_USER,'role'=>'admin'];
+    if (
+        defined('ADMIN_USER') &&
+        $username === ADMIN_USER &&
+        $password === ADMIN_PASS
+    ){
+        $_SESSION['user'] = [
+            'username' => ADMIN_USER,
+            'role' => 'admin'
+        ];
+
         return true;
     }
 
     return false;
 }
-
 function logout(){
     unset($_SESSION['user']);
 }
