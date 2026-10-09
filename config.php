@@ -1,9 +1,5 @@
 <?php
 // DB 接続設定を環境に合わせて編集してください
-define('DB_HOST', '127.0.0.1');
-define('DB_NAME', 'pet_digital_id');
-define('DB_USER', 'root');
-define('DB_PASS', '');
 
 // ベースURL（必要に応じて設定）
 define('BASE_URL', '/動物保護');
