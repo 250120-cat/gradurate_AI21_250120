@@ -34,10 +34,10 @@ function env($key, $default = null) {
 // ADMIN_EMAIL=notify@example.com
 
 // 開発用に MailHog を使う（ローカル受信、本番SMTP未設定時）
-if (!defined('SMTP_HOST')) define('SMTP_HOST', env('SMTP_HOST', '127.0.0.1'));
-if (!defined('SMTP_PORT')) define('SMTP_PORT', (int) env('SMTP_PORT', 1025));
-if (!defined('SMTP_USER')) define('SMTP_USER', env('SMTP_USER', ''));
-if (!defined('SMTP_PASS')) define('SMTP_PASS', env('SMTP_PASS', ''));
+define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1');
+define('DB_NAME', getenv('DB_NAME') ?: 'pet_digital_id');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASS') ?: '');
 if (!defined('SMTP_SECURE')) define('SMTP_SECURE', env('SMTP_SECURE', ''));
 if (!defined('MAIL_FROM')) define('MAIL_FROM', env('MAIL_FROM', 'noreply@local'));
 if (!defined('ADMIN_EMAIL')) define('ADMIN_EMAIL', env('ADMIN_EMAIL', 'admin@example.com'));
