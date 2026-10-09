@@ -30,10 +30,10 @@ function env($key, $default = null) {
 // ADMIN_EMAIL=notify@example.com
 
 // 開発用に MailHog を使う（ローカル受信、本番SMTP未設定時）
-define('DB_HOST', getenv('DB_HOST') ?: '127.0.0.1');
-define('DB_NAME', getenv('DB_NAME') ?: 'pet_digital_id');
-define('DB_USER', getenv('DB_USER') ?: 'root');
-define('DB_PASS', getenv('DB_PASS') ?: '');
+define('DB_HOST', 'sql306.infinityfree.com');
+define('DB_NAME', 'if0_43126667_pet_digital_id');
+define('DB_USER', 'if0_43126667');
+define('DB_PASS', 'ugJmQIp10xl8a');
 if (!defined('SMTP_SECURE')) define('SMTP_SECURE', env('SMTP_SECURE', ''));
 if (!defined('MAIL_FROM')) define('MAIL_FROM', env('MAIL_FROM', 'noreply@local'));
 if (!defined('ADMIN_EMAIL')) define('ADMIN_EMAIL', env('ADMIN_EMAIL', 'admin@example.com'));
